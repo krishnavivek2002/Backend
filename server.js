@@ -5,22 +5,20 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import path from 'path';
-import jwt from 'jsonwebtoken';  // Import JWT for authentication
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-
 
 const app = express();
 
-
-// Configure CORS to allow all hosts
+// Configure CORS to allow only localhost:3001
 app.use(cors({
-    origin: '*', // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allow specific headers
+    origin: 'http://localhost:3001', // Only allow localhost:3001
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(bodyParser.json());
-app.use(express.static('uploads')); // Serve static files from the uploads directory
+app.use(express.static('uploads'));
 
 // Your routes and other app logic can go here
 
@@ -29,9 +27,8 @@ app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
 
-
 // Export the app for testing
-export default app; // Default export
+export default app;
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://krishnavivekyarrakula2002:MHmbKeMG5Rgu5RC@doctormodule.8ztyt.mongodb.net/", {
