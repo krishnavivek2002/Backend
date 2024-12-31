@@ -11,8 +11,14 @@ import dotenv from 'dotenv';
 
 const app = express();
 
-// Middleware
-app.use(cors());
+
+// Configure CORS to allow all hosts
+app.use(cors({
+    origin: '*', // Allow all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // Allow specific headers
+}));
+
 app.use(bodyParser.json());
 app.use(express.static('uploads')); // Serve static files from the uploads directory
 
@@ -22,6 +28,7 @@ app.use(express.static('uploads')); // Serve static files from the uploads direc
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
+
 
 // Export the app for testing
 export default app; // Default export
