@@ -10,15 +10,32 @@ import dotenv from 'dotenv';
 
 const app = express();
 
-// Configure CORS to allow only localhost:3001
+// Configure CORS for localhost:3001
 app.use(cors({
-    origin: 'http://localhost:3001', // Only allow localhost:3001
+    origin: 'http://localhost:3001',
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
+// Handle preflight requests
+app.options('*', cors());
+
+// Additional CORS headers
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
 app.use(bodyParser.json());
-app.use(express.static('uploads'));
+app.use(express.static('uploads')); // Serve static files from the uploads directory
 
 // Your routes and other app logic can go here
 
